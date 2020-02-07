@@ -1,0 +1,249 @@
+html {
+    position: relative;
+    min-height: 100%;
+  }
+
+* {
+    font-family: "PTRootUIWebRegular";
+}
+
+:focus {
+    outline: 0!important;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar-track {
+	background-color: rgba(0,0,0,0);
+}
+
+::-webkit-scrollbar {
+	width: 10px;
+	background-color: rgba(0,0,0,0);
+}
+
+::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	background-color: rgba(0,0,0,0.1);
+}
+
+
+/* Navigation */
+.nav-link {
+    font-family: "PTRootUIWebMedium";
+}
+
+.navbar-light .navbar-nav .active>.nav-link {
+    color:#219653;
+}
+
+.navbar-brand {
+    font-family: "PTRootUIWebMedium";
+}
+
+nav {
+    box-shadow: 3px 4px 25px rgba(0, 0, 0, 0.09);
+    margin-bottom: 4rem;
+}
+
+@media (min-width: 992px) {
+    .navbar-expand-lg .navbar-nav .nav-link {
+        padding-right: .75rem;
+        padding-left: .75rem;
+    }
+}
+
+
+/* Cards */
+
+.card {
+    border:none;
+    box-shadow: 3px 4px 25px rgba(0, 0, 0, 0.09);
+    border-radius: 1.5rem;
+    margin-bottom: 3rem;
+    transition: all ease .3s;
+}
+
+.card:hover {
+    border:none;
+    box-shadow: 2px 4px 25px rgba(0, 0, 0, 0.25);
+    transition: all ease .3s;
+}
+
+.link-card {
+    color: #0E0E0E;
+    
+}
+
+.link-card:hover {
+    color: #0E0E0E;
+    text-decoration: none;
+}
+
+.card-img-top {
+    border-radius: 1.5rem 1.5rem 0 0;
+}
+
+.card-title {
+    font-family: "PTRootUIWebMedium";
+    font-size: 1.5rem;
+    line-height: 133%;
+}
+
+.card-text {
+    font-family: "PTRootUIWebMedium";
+    font-size: 1rem;
+    line-height: 133%;
+    color: #4A4A4A;
+}
+
+.card-body {
+    padding: 1.25rem 1.25rem 2rem;
+}
+
+/* Question page */
+.img-block {
+    width:100%;
+    height:18rem;
+    border-radius: 1.5rem;
+    margin-bottom: 2rem;
+    background:gray;
+}
+
+.question-title {
+    font-family: "PTRootUIWebMedium";
+    font-size: 1.25rem;
+    line-height: 133%;
+    margin-bottom: 1.5rem;
+}
+
+form {
+    margin-bottom:3rem;
+}
+
+.question-number {
+    font-family:inherit;
+    color:#828282;
+}
+
+#question-text {
+    font-family: inherit;
+}
+
+
+.custom-control-label {
+    font-size: 1.25rem;
+    transition: all ease .3s;
+    cursor: pointer;
+    color:#0E0E0E;
+}
+
+.custom-control-label:hover {
+    transition: all ease .3s;  
+    text-shadow: 1px 1px 2px #b5b5b5;
+}
+
+.custom-control {
+    margin-bottom: .5rem;
+}
+
+.custom-control-label::before, .custom-control-label::after {
+    top: .5rem;
+}
+
+.custom-radio .custom-control-input:checked~.custom-control-label::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='4' fill='rgb(33, 150, 83)'/%3e%3c/svg%3e");
+}
+
+.custom-control-input:checked~.custom-control-label::before {
+    color: #fff;
+    border-color: #27AE60;
+    border: 2px solid #27AE60;
+    background-color: #27ae6000;
+}
+
+.custom-control-input:focus~.custom-control-label::before {
+    box-shadow: none;
+}
+
+.two-button-in-row {
+    width:100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+}
+
+.two-button-in-row a {
+    width: calc(50% - 1.5rem);
+    box-shadow: 3px 4px 25px rgba(0, 0, 0, 0.09);
+    font-family: "PTRootUIWebMedium";
+    border-radius: 1.5rem;
+    background-color: white;
+    border: 0;
+    color: #219653;
+    height: 3.5rem;
+    transition: all ease .3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.two-button-in-row a:hover {
+    background-color: white;
+    box-shadow: 2px 4px 25px rgba(0, 0, 0, 0.15);
+    color: #1F864B;
+    transition: all ease .3s;
+}
+
+.btn-primary.disabled, .btn-primary:disabled, .btn-primary.disabled:hover {
+    color: #828282;
+    background-color: #ffffff;
+    border-color: #ffffff;
+    box-shadow:none;
+    cursor: default;
+}
+
+.btn-primary:not(:disabled):not(.disabled).active:focus, .btn-primary:not(:disabled):not(.disabled):active:focus, .show>.btn-primary.dropdown-toggle:focus {
+    box-shadow: none;
+}
+
+.btn-primary.focus, .btn-primary:focus {
+    box-shadow: none;
+}
+
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+    color: #1F864B;
+    background-color: #ffffff;
+    border-color: #ffffff;
+}
+
+.custom-file-input {
+    cursor: pointer;
+}
+
+.custom-file-label {
+    border: 1px solid #e5e5e5;
+    border-radius: .5rem;
+}
+
+.custom-file-label::after {
+    color: #ffffff;
+    font-family: "PTRootUIWebRegular";
+    content: "Загрузить фото";
+    background-color: #219653;
+    border-radius: 0 .5rem .5rem 0;
+}
+
+/* Sticky footer */
+body {
+    margin-bottom: 4rem; /* Margin bottom by footer height */
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 4rem; /* Set the fixed height of the footer here */
+    line-height: 4rem; /* Vertically center the text there */
+    background-color: #f5f5f5;
+}
+
