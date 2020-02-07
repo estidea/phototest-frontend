@@ -1,3 +1,5 @@
+const testId = 1;
+
 // SELECT questions with testId="Игра_Престолов"
 const questions = [
     {
@@ -28,7 +30,7 @@ const questions = [
         questionId:2,
         questionTitle: "Второй вопрос",
         questionPhoto: "img/test1/test-1-q-2.jpg",
-        questionType: "checkbox",
+        questionType: "radio",
         answers: [
             {
                 answerId:5,
@@ -88,21 +90,26 @@ let fillTheQuestion = function(index) {
     answersBlock.empty();
     for(let i in q.answers){
         answersBlock.append(`<div class="custom-control custom-${q.questionType}">
-        <input type="${q.questionType}" class="custom-control-input" id="${q.answers[i].answerId}" value="${q.answers[i].answerId}" name="answer-name">
-        <label class="custom-control-label" for="${q.answers[i].answerId}">${q.answers[i].answerText}</label>
+        <input type="${q.questionType}" class="custom-control-input" id="answer-${q.answers[i].answerId}" value="${q.answers[i].answerId}" name="answer-name">
+        <label class="custom-control-label" for="answer-${q.answers[i].answerId}">${q.answers[i].answerText}</label>
     </div>`
         );
     }
-
-    if(currentIndex===0){
-        $("#btn-prev").addClass("disabled");  
-    } else {
-        $("#btn-prev").removeClass("disabled");  
+    
+    // Если ответ уже висит в userAnswers
+    if(userAnswers[currentIndex]) {
+        $("#answer-"+userAnswers[currentIndex].answerId).attr('checked', 'checked');
     }
+    
+    if(currentIndex===0)
+        $("#btn-prev").addClass("disabled");  
+    else 
+        $("#btn-prev").removeClass("disabled");  
 }
 
 let fillThePhoto = function() {
     console.log("fill photo");
+    // toDo clear local storage
 }
 
 let getUserAnswer = function() {
@@ -117,10 +124,19 @@ let getUserAnswer = function() {
 
 let saveUserAnswer = function(){
     let answer = getUserAnswer();
-    // save to local storage
-
+    console.log(answer);
     // save to array
-    userAnswers.push(answer);
+    if(userAnswers[currentIndex]){
+        userAnswers[currentIndex].answerId = answer.answerId;
+    } else {
+        userAnswers.push(answer);
+    }
+
+    // push array to local storage
+    var serialObj = JSON.stringify(userAnswers); 
+    localStorage.setItem("userAnswers"+testId, serialObj);
+
+    console.log(userAnswers);
 }
 
 /* ========================================= */
@@ -132,6 +148,11 @@ let questionsNumber = null;
 let userAnswers = [];
 
 $(document).ready(function() {
+    // try to catch userAnwsers from localStorage
+    if(localStorage.getItem("userAnswers"+testId)){
+        userAnswers = JSON.parse(localStorage.getItem("userAnswers"+testId));
+    }
+        
     questionsNumber = questions.length;
     fillTheQuestion(currentIndex);
 });
@@ -142,14 +163,12 @@ $("#btn-prev").on("click",function(e){
     e.preventDefault();
     currentIndex--;
     fillTheQuestion(currentIndex);
-})
+});
 
 $("#btn-next").on("click",function(e){
     e.preventDefault();
 
     saveUserAnswer();
-    console.log(userAnswers);
-
 
     if(currentIndex===questionsNumber-1){
         fillThePhoto();
@@ -157,23 +176,4 @@ $("#btn-next").on("click",function(e){
         currentIndex++;
         fillTheQuestion(currentIndex);
     }
-})
-
-
-
-
-
-
-
-//создадим объект
-var obj = {
-	item1: 1,
-	item2: [123, "two", 3.0],
-	item3:"hello"
-};
-
-var serialObj = JSON.stringify(obj); //сериализуем его
-
-localStorage.setItem("myKey", serialObj); //запишем его в хранилище по ключу "myKey"
-
-var returnObj = JSON.parse(localStorage.getItem("myKey")) //спарсим его обратно объект
+});
