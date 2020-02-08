@@ -42,6 +42,9 @@
             <a class="nav-link" href="test-question.html">Вопрос</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="load-photo.html">Загрузка фото</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="rezult.html">Результат</a>
           </li>
         </ul>
@@ -60,10 +63,20 @@
           <div id="question-answers">
           </div>
 
+          <div id="load-photo-block" class="custom-file" style="display:none;visibility:hidden;">
+            <input type="file" class="custom-file-input" id="final-photo-file" required>
+            <label id="file-label" class="custom-file-label" for="final-photo-file">Выберите фото...</label>
+            <div class="invalid-feedback">Неправильный формат фото</div>
+          </div>
+
           <div class="two-button-in-row">
             <a id="btn-prev" type="button" href="#" class="btn btn-primary btn-lg">Назад</a>
             <a id="btn-next" type="button" href="#" class="btn btn-primary btn-lg">Далее</a>
+            <a id="btn-prev-photo" type="button" href="#" style="display:none;visibility:hidden;" class="btn btn-primary btn-lg">Назад</a>
+            <a id="btn-final" type="button" href="#" style="display:none;visibility:hidden;" class="btn btn-primary btn-lg disabled">Получить результат</a>
           </div>
+ 
+         
 
         </form>
       </div>  

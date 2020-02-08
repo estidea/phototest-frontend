@@ -1,4 +1,10 @@
 const testId = 1;
+const maxFileSize = 5242880; // get from the server
+
+let packageToServer = {
+    image: null,
+    userAnswers:null
+}
 
 // SELECT questions with testId="Игра_Престолов"
 const questions = [
@@ -72,7 +78,7 @@ questions.push({
 
 // ============ Functions ==============
 
-let fillTheQuestion = function(index) {
+let drawQuestionPage = function(index) {
     let imageBlock = $("#question-image");
     let orderBlock = $("#question-order");
     let textBlock = $("#question-text");
@@ -99,6 +105,8 @@ let fillTheQuestion = function(index) {
     // Если ответ уже висит в userAnswers
     if(userAnswers[currentIndex]) {
         $("#answer-"+userAnswers[currentIndex].answerId).attr('checked', 'checked');
+    } else {
+        $("#btn-next").addClass("disabled");  
     }
     
     if(currentIndex===0)
@@ -107,8 +115,20 @@ let fillTheQuestion = function(index) {
         $("#btn-prev").removeClass("disabled");  
 }
 
-let fillThePhoto = function() {
-    console.log("fill photo");
+let drawLoadPhotoPage = function() {
+    $("#btn-prev").css({"display":"none","visibility":"hidden"});
+    $("#btn-next").css({"display":"none","visibility":"hidden"});
+    $("#question-image").css({"display":"none","visibility":"hidden"});
+    $("#question-order").css({"display":"none","visibility":"hidden"});
+    $("#question-answers").css({"display":"none","visibility":"hidden"});
+
+    $("#question-text").text("Загрузите свою фотографию для получения результата.");
+
+    $("#btn-final").css({"display":"block","visibility":"visible"});
+    $("#btn-prev-photo").css({"display":"flex","visibility":"visible"});
+    $("#btn-final").css({"display":"flex","visibility":"visible"});
+    $("#load-photo-block").css({"display":"block","visibility":"visible"});
+
     // toDo clear local storage
 }
 
@@ -124,7 +144,7 @@ let getUserAnswer = function() {
 
 let saveUserAnswer = function(){
     let answer = getUserAnswer();
-    console.log(answer);
+
     // save to array
     if(userAnswers[currentIndex]){
         userAnswers[currentIndex].answerId = answer.answerId;
@@ -135,9 +155,17 @@ let saveUserAnswer = function(){
     // push array to local storage
     var serialObj = JSON.stringify(userAnswers); 
     localStorage.setItem("userAnswers"+testId, serialObj);
-
-    console.log(userAnswers);
 }
+
+function sendFiles(files) {
+    let maxFileSize = 5242880;
+    let Data = new FormData();
+    $(files).each(function(index, file) {
+         if ((file.size <= maxFileSize) && ((file.type == 'image/png') || (file.type == 'image/jpeg'))) {
+              Data.append('images[]', file);
+         }
+    });
+};
 
 /* ========================================= */
 /* ========================================= */
@@ -150,11 +178,13 @@ let userAnswers = [];
 $(document).ready(function() {
     // try to catch userAnwsers from localStorage
     if(localStorage.getItem("userAnswers"+testId)){
+        // set the current index
         userAnswers = JSON.parse(localStorage.getItem("userAnswers"+testId));
+        currentIndex = userAnswers.length-1;
     }
         
     questionsNumber = questions.length;
-    fillTheQuestion(currentIndex);
+    drawQuestionPage(currentIndex);
 });
 
 // ToDo when I change option my btn should begin be able
@@ -162,18 +192,83 @@ $(document).ready(function() {
 $("#btn-prev").on("click",function(e){
     e.preventDefault();
     currentIndex--;
-    fillTheQuestion(currentIndex);
+    drawQuestionPage(currentIndex);
+});
+
+$( "#question-form" ).change(function() {
+    $("#btn-next").removeClass("disabled");  
 });
 
 $("#btn-next").on("click",function(e){
     e.preventDefault();
-
     saveUserAnswer();
 
     if(currentIndex===questionsNumber-1){
-        fillThePhoto();
+        drawLoadPhotoPage();
     } else {
         currentIndex++;
-        fillTheQuestion(currentIndex);
+        drawQuestionPage(currentIndex);
     }
+});
+
+/* Load photo page btns events */
+$("#btn-prev-photo").on("click",function(e){
+    e.preventDefault();
+    $("#btn-prev").css({"display":"flex","visibility":"visible"});
+    $("#btn-next").css({"display":"flex","visibility":"visible"});
+    $("#question-image").css({"display":"block","visibility":"visible"});
+    $("#question-order").css({"display":"block","visibility":"visible"});
+    $("#question-answers").css({"display":"block","visibility":"visible"});
+
+    $("#btn-final").css({"display":"none","visibility":"hidden"});
+    $("#btn-prev-photo").css({"display":"none","visibility":"hidden"});
+    $("#btn-final").css({"display":"none","visibility":"hidden"});
+    $("#load-photo-block").css({"display":"none","visibility":"hidden"});
+
+    drawQuestionPage(currentIndex);
+});
+
+$('#final-photo-file').change(function() {
+    let files = this.files;
+    if(files){
+        $('.invalid-feedback').css("display","none");
+        let Data = new FormData();
+        if ((files[0].size <= maxFileSize)) {
+            if((files[0].type == 'image/png') || (files[0].type == 'image/jpeg')){
+                Data.append('images[]', files[0]);
+                $("#btn-final").removeClass("disabled");  
+                $("#file-label").text(files[0].name);
+    
+                packageToServer = {
+                    image: Data,
+                    userAnswers:userAnswers
+                }
+            } else {
+                $('.invalid-feedback').text("Неверный формат файла – должен быть jpeg или png");
+                $('.invalid-feedback').css("display","block");
+            }
+            
+        } else {
+            $('.invalid-feedback').text("Загружаемый файл слишком большой. Используйте фото до "+Math.floor(maxFileSize/1000000)+" МБ");
+            $('.invalid-feedback').css("display","block");
+        } 
+    } 
+});
+
+$("#btn-final").on("click",function(e){
+    e.preventDefault();
+   
+    // Send the test rezults and photo to the server
+    console.log(packageToServer);
+
+    // $.ajax({
+    //     url: ZhenyaUrl,
+    //     type: type,
+    //     data: packageToServer,
+    //     contentType: false,
+    //     processData: false,
+    //     success: function(data) {
+    //         alert('Ответ от сервака');
+    //     }
+    // });
 });

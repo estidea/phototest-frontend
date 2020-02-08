@@ -129,12 +129,22 @@ form {
     font-family: inherit;
 }
 
-
 .custom-control-label {
     font-size: 1.25rem;
     transition: all ease .3s;
     cursor: pointer;
     color:#0E0E0E;
+}
+
+.custom-control-label::selection {
+    color: none;
+    background: none;
+}
+
+/* For Mozilla Firefox */
+.custom-control-label::-moz-selection {
+    color: none;
+    background: none;
 }
 
 .custom-control-label:hover {
