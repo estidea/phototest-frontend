@@ -6,9 +6,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
-  <meta name="author" content="Kireev-ZHurenko studio">
+  <meta name="author" content="Kireev-Zhurenko studio">
 
-  <title>Тест по Игре престолов</title>
+  <title>Тест по Игре престолов (описание)</title>
 
   <!-- Bootstrap core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -56,28 +56,16 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-8">
-        <div id="question-image" class="img-block" alt=""></div>
-        <form id="question-form" action="">
-          <p class="question-title"><span id="question-order" class="question-number"></span><span id="question-text"></span></p>
-          
-          <div id="question-answers">
-          </div>
-
-          <div id="load-photo-block" class="custom-file" style="display:none;visibility:hidden;">
-            <input type="file" class="custom-file-input" id="final-photo-file" required>
-            <label id="file-label" class="custom-file-label" for="final-photo-file">Выберите фото...</label>
-            <div class="invalid-feedback">Неправильный формат фото</div>
-          </div>
-
+        <div id="test-image" src="img/test1.jpg" class="img-block" alt=""></div>
+        <form action="">
+          <p class="question-title"><span class="question-number">Тест: </span><span id="test-announce"></span></p>      
+          <p id="test-description">
+          </p>
           <div class="two-button-in-row">
-            <a id="btn-prev" type="button" href="#" class="btn btn-primary btn-lg">Назад</a>
-            <a id="btn-next" type="button" href="#" class="btn btn-primary btn-lg">Далее</a>
-            <a id="btn-prev-photo" type="button" href="#" style="display:none;visibility:hidden;" class="btn btn-primary btn-lg">Назад</a>
-            <a id="btn-final" type="button" href="#" style="display:none;visibility:hidden;" class="btn btn-primary btn-lg disabled">Получить результат</a>
+            <a type="button" href="index.html" class="btn btn-secondary btn-lg">Выбрать другой тест</a>
+            <a type="button" href="test-question.html" class="btn btn-primary btn-lg">Начать тест</a>
           </div>
  
-         
-
         </form>
       </div>  
     </div>
@@ -92,7 +80,7 @@
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.slim.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="js/test-questions.js"></script>
+  <script src="js/test-description.js"></script>
 
 </body>
 

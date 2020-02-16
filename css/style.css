@@ -7,6 +7,10 @@ html {
     font-family: "PTRootUIWebRegular";
 }
 
+p,a {
+    line-height: 133%;
+}
+
 :focus {
     outline: 0!important;
 }
@@ -100,7 +104,9 @@ nav {
     padding: 1.25rem 1.25rem 2rem;
 }
 
-/* Question page */
+
+
+/* Question and text description page */
 .img-block {
     width:100%;
     height:18rem;
@@ -120,13 +126,12 @@ form {
     margin-bottom:3rem;
 }
 
-.question-number {
-    font-family:inherit;
-    color:#828282;
+.question-title span {
+    font-family: inherit;
 }
 
-#question-text {
-    font-family: inherit;
+.question-number {
+    color:#828282;
 }
 
 .custom-control-label {
@@ -139,6 +144,12 @@ form {
 .custom-control-label::selection {
     color: none;
     background: none;
+}
+
+#show-all {
+    color: #2F80ED;
+    cursor: pointer;
+    font-family: inherit;
 }
 
 /* For Mozilla Firefox */
@@ -190,7 +201,7 @@ form {
     background-color: white;
     border: 0;
     color: #219653;
-    height: 3.5rem;
+    min-height: 3.5rem;
     transition: all ease .3s;
     display: flex;
     justify-content: center;
@@ -202,6 +213,31 @@ form {
     box-shadow: 2px 4px 25px rgba(0, 0, 0, 0.15);
     color: #1F864B;
     transition: all ease .3s;
+}
+
+a.btn-secondary {
+    color: #828282;;
+}
+
+a.btn-secondary:hover {
+    color: #4a4a4a;;
+}
+
+a.btn-complementary {
+    color: #FFA217;
+}
+
+a.btn-complementary:hover {
+    color: rgb(228, 147, 26);
+}
+
+.btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active, .show>.btn-secondary.dropdown-toggle {
+    color: #262626;
+    background-color: #ffffff;
+}
+
+.btn-secondary:not(:disabled):not(.disabled).active:focus, .btn-secondary:not(:disabled):not(.disabled):active:focus, .show>.btn-secondary.dropdown-toggle:focus {
+    box-shadow: none;
 }
 
 .btn-primary.disabled, .btn-primary:disabled, .btn-primary.disabled:hover {
@@ -216,7 +252,7 @@ form {
     box-shadow: none;
 }
 
-.btn-primary.focus, .btn-primary:focus {
+.btn-primary.focus, .btn-primary:focus,.btn-secondary.focus, .btn-secondary:focus {
     box-shadow: none;
 }
 
@@ -257,3 +293,10 @@ body {
     background-color: #f5f5f5;
 }
 
+/* Rezult page */
+.rezult-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
