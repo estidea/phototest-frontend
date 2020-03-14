@@ -17,7 +17,6 @@ $(document).ready(function() {
         $("#test-description").text(finalDescription+"...");
         $("#test-description").append(`<span id="show-all"> ещё</span>`)
         $("#show-all").on("click",function(){
-            console.log("sss");
             $("#test-description").text(testDescription);
         });
     } else {

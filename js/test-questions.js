@@ -9,49 +9,49 @@ let packageToServer = {
 // SELECT questions with testId="Игра_Престолов"
 const questions = [
     {
-        questionId:1,
+        question:1,
         questionTitle: "Первый вопрос",
         questionPhoto: "img/test1/test-1-q-1.jpg",
         questionType: "radio",
         answers: [
             {
-                answerId:1,
+                answer:1,
                 answerText:"Первый ответ"
             },
             {
-                answerId:2,
+                answer:2,
                 answerText:"Второй ответ"
             },
             {
-                answerId:3,
+                answer:3,
                 answerText:"Третий ответ"
             },
             {
-                answerId:4,
+                answer:4,
                 answerText:"Четвёртый ответ"
             },
         ]
     },
     {
-        questionId:2,
+        question:2,
         questionTitle: "Второй вопрос",
         questionPhoto: "img/test1/test-1-q-2.jpg",
         questionType: "radio",
         answers: [
             {
-                answerId:5,
+                answer:5,
                 answerText:"Первый ответ"
             },
             {
-                answerId:6,
+                answer:6,
                 answerText:"Второй ответ"
             },
             {
-                answerId:7,
+                answer:7,
                 answerText:"Третий ответ"
             },
             {
-                answerId:8,
+                answer:8,
                 answerText:"Четвёртый ответ"
             },
         ]
@@ -60,17 +60,17 @@ const questions = [
 
 // add gender question
 questions.push({
-    questionId:"gender",
+    question:"gender",
     questionTitle: "Выберите ваш пол",
     questionPhoto: "img/gender.png",
     questionType: "radio",
     answers: [
         {
-            answerId:"male",
+            answer:"male",
             answerText:"Мужской"
         },
         {
-            answerId:"female",
+            answer:"female",
             answerText:"Женский"
         },
     ]
@@ -96,15 +96,15 @@ let drawQuestionPage = function(index) {
     answersBlock.empty();
     for(let i in q.answers){
         answersBlock.append(`<div class="custom-control custom-${q.questionType}">
-        <input type="${q.questionType}" class="custom-control-input" id="answer-${q.answers[i].answerId}" value="${q.answers[i].answerId}" name="answer-name">
-        <label class="custom-control-label" for="answer-${q.answers[i].answerId}">${q.answers[i].answerText}</label>
+        <input type="${q.questionType}" class="custom-control-input" id="answer-${q.answers[i].answer}" value="${q.answers[i].answer}" name="answer-name">
+        <label class="custom-control-label" for="answer-${q.answers[i].answer}">${q.answers[i].answerText}</label>
     </div>`
         );
     }
     
     // Если ответ уже висит в userAnswers
     if(userAnswers[currentIndex]) {
-        $("#answer-"+userAnswers[currentIndex].answerId).attr('checked', 'checked');
+        $("#answer-"+userAnswers[currentIndex].answer).attr('checked', 'checked');
     } else {
         $("#btn-next").addClass("disabled");  
     }
@@ -135,9 +135,8 @@ let drawLoadPhotoPage = function() {
 let getUserAnswer = function() {
     let checkedOption = $('input[name=answer-name]:checked', '#question-form').val();
     let answer = {
-        questionNumber: currentIndex,
-        questionId: questions[currentIndex].questionId,
-        answerId: checkedOption,
+        question: questions[currentIndex].question,
+        answer: checkedOption,
     }
     return answer;
 }
@@ -147,7 +146,7 @@ let saveUserAnswer = function(){
 
     // save to array
     if(userAnswers[currentIndex]){
-        userAnswers[currentIndex].answerId = answer.answerId;
+        userAnswers[currentIndex].answer = answer.answer;
     } else {
         userAnswers.push(answer);
     }
@@ -156,16 +155,6 @@ let saveUserAnswer = function(){
     var serialObj = JSON.stringify(userAnswers); 
     localStorage.setItem("userAnswers"+testId, serialObj);
 }
-
-function sendFiles(files) {
-    let maxFileSize = 5242880;
-    let Data = new FormData();
-    $(files).each(function(index, file) {
-         if ((file.size <= maxFileSize) && ((file.type == 'image/png') || (file.type == 'image/jpeg'))) {
-              Data.append('images[]', file);
-         }
-    });
-};
 
 /* ========================================= */
 /* ========================================= */
@@ -176,15 +165,20 @@ let questionsNumber = null;
 let userAnswers = [];
 
 $(document).ready(function() {
+    questionsNumber = questions.length;
     // try to catch userAnwsers from localStorage
     if(localStorage.getItem("userAnswers"+testId)){
         // set the current index
         userAnswers = JSON.parse(localStorage.getItem("userAnswers"+testId));
-        currentIndex = userAnswers.length-1;
+        currentIndex = userAnswers.length;
+        // if user is on photo stage of test
+        if(currentIndex===questionsNumber)
+            drawLoadPhotoPage();
     }
-        
-    questionsNumber = questions.length;
-    drawQuestionPage(currentIndex);
+
+    // if user is not on photo stage of test
+    if(currentIndex!=questionsNumber)
+        drawQuestionPage(currentIndex);
 });
 
 // ToDo when I change option my btn should begin be able
@@ -230,19 +224,36 @@ $("#btn-prev-photo").on("click",function(e){
 
 $('#final-photo-file').change(function() {
     let files = this.files;
+
+    
+    
+
     if(files){
         $('.invalid-feedback').css("display","none");
-        let Data = new FormData();
+        // let Data = new FormData();
         if ((files[0].size <= maxFileSize)) {
             if((files[0].type == 'image/png') || (files[0].type == 'image/jpeg')){
-                Data.append('images[]', files[0]);
+                // Data.append('images[]', files[0]);
                 $("#btn-final").removeClass("disabled");  
                 $("#file-label").text(files[0].name);
-    
-                packageToServer = {
-                    image: Data,
-                    userAnswers:userAnswers
-                }
+
+                let reader = new FileReader();
+                reader.onloadend = function () {
+                    // Since it contains the Data URI, we should remove the prefix and keep only Base64 string
+                    var b64 = reader.result.replace(/^data:.+;base64,/, '');
+                    $("#user-photo").css({"display":"block","visibility":"visible"});
+                    $("#user-photo").attr("src",reader.result);
+
+                    packageToServer = {
+                        "user_image": reader.result,
+                        "user_answers":userAnswers
+                    }
+                    console.log(packageToServer);
+                };
+
+                reader.readAsDataURL(files[0]);
+
+
             } else {
                 $('.invalid-feedback').text("Неверный формат файла – должен быть jpeg или png");
                 $('.invalid-feedback').css("display","block");
